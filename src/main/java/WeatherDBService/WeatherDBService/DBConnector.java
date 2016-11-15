@@ -70,7 +70,6 @@ public class DBConnector {
 		System.out.println("Success");
 	}
 	public String selectTemperaturAtSpecificTime() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-		System.out.println("1");
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
 		this.connection = (Connection) DriverManager.getConnection("jdbc:mysql://"+ this.ip + ":" + this.port + "/" + this.database, this.user, this.passwort);
 		String query = "SELECT temperature FROM crawledWeatherData LIMIT 1;";
