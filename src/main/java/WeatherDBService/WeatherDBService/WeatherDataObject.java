@@ -54,4 +54,44 @@ public class WeatherDataObject {
 		String json = gson.toJson(this);
 		return json;
 	}
+
+	public String getWeatherIcon() {
+		return weatherIcon;
+	}
+
+	public String getWeatherDesc() {
+		return weatherDesc;
+	}
+
+	public String getWeatherDescDetail() {
+		return weatherDescDetail;
+	}
+
+	public String getStationName() {
+		return stationName;
+	}
+
+	public double getTemperature() {
+		return temperature;
+	}
+
+	public int getHumidity() {
+		return humidity;
+	}
+
+	public int getPressure() {
+		return pressure;
+	}
+
+	public int getWindDeg() {
+		return windDeg;
+	}
+
+	public double getWindSpeed() {
+		return windSpeed;
+	}
+
+	public long getDateTime() {
+		return dateTime;
+	}
 }
