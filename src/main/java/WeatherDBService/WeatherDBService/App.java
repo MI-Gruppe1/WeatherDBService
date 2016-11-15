@@ -27,9 +27,10 @@ public class App
     	get("/currentWeather", (req, res) -> dbcon.selectPrecipitationAtSpecificTime());
     	post("/newWeatherData", (req, res) -> {
     		String string = req.body();
-    		JSONObject dummy = new JSONObject();
-    		dbcon.insertWeatherData(dummy);
-    		return "";
+    		
+    		WeatherDataObject weatherDataObject = WeatherDataObject.jsonToJavaObeject(string);
+    		// dbcon.insertWeatherData(weatherDataObject);
+    		return "done";
     	});
     }
 }

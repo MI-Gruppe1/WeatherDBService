@@ -35,8 +35,8 @@ public class DBConnector {
 	}
 
 	// Insert WeatherData into MySQL-Database
-	public void insertWeatherData(JSONObject json) throws JSONException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-
+	public void insertWeatherData(WeatherDataObject weatherdataObject) throws JSONException, InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+		
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
 		this.connection = (Connection) DriverManager.getConnection("jdbc:mysql://"+ this.ip + ":" + this.port + "/" + this.database, this.user, this.passwort);
 		
