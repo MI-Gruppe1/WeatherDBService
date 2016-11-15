@@ -2,6 +2,12 @@ package WeatherDBService.WeatherDBService;
 
 import com.google.gson.Gson;
 
+/**
+ * 
+ * @author Johannes Berger
+ *
+ *         Representation of one dataset as a Java object
+ */
 public class WeatherDataObject {
 
 	private String weatherIcon;
@@ -19,6 +25,7 @@ public class WeatherDataObject {
 
 	/**
 	 * Will construct a new WeatherDataObject and fill it with the given values
+	 * 
 	 * @param weatherIcon
 	 * @param weatherDesc
 	 * @param weatherDescDetail
@@ -30,8 +37,9 @@ public class WeatherDataObject {
 	 * @param windSpeed
 	 * @param dateTime
 	 */
-	public WeatherDataObject(String weatherIcon, String weatherDesc, String weatherDescDetail, String stationName, double longitude, double latitude,
-			double temperature, int humidity, int pressure, int windDeg, double windSpeed, long dateTime) {
+	public WeatherDataObject(String weatherIcon, String weatherDesc, String weatherDescDetail, String stationName,
+			double longitude, double latitude, double temperature, int humidity, int pressure, int windDeg,
+			double windSpeed, long dateTime) {
 		super();
 		this.weatherIcon = weatherIcon;
 		this.weatherDesc = weatherDesc;
@@ -46,14 +54,25 @@ public class WeatherDataObject {
 		this.windSpeed = windSpeed;
 		this.dateTime = dateTime;
 	}
-	
+
+	/**
+	 * Converts a JSON String into a Java object
+	 * 
+	 * @param json
+	 * @return WeatherDataObject
+	 */
 	public static WeatherDataObject jsonToJavaObeject(String json) {
 		Gson gson = new Gson();
 		WeatherDataObject weatherDataObject = gson.fromJson(json, WeatherDataObject.class);
 		return weatherDataObject;
 	}
-	
-	public String toJSON(){
+
+	/**
+	 * Converts this object into a JSON String
+	 * 
+	 * @return JSON String
+	 */
+	public String toJSON() {
 		Gson gson = new Gson();
 		String json = gson.toJson(this);
 		return json;
@@ -78,11 +97,11 @@ public class WeatherDataObject {
 	public double getLongitude() {
 		return longitude;
 	}
-	
+
 	public double getlatitude() {
 		return latitude;
 	}
-	
+
 	public double getTemperature() {
 		return temperature;
 	}
