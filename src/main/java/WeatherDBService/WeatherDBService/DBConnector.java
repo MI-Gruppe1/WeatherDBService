@@ -10,6 +10,12 @@ import org.json.JSONObject;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
+/*
+ * Author: Jan-Peter Petersen
+ * E-Mail: jan-peter.petersen@haw-hamburg.de 
+ */
+
+// Alles als Prototyp umgesetzt. dient als Grundlage der naechsten IMplementation
 public class DBConnector {
 	
 	private String ip;
