@@ -1,10 +1,19 @@
+-- SQL Testscript Schema Dummy
+-- author: Jan-Peter Petersen
+-- Feedback immer her damit
+
+
+-- select database
 use testing;
+
+-- drop existing tables
 DROP TABLE IF EXISTS WeatherData;
 DROP TABLE IF EXISTS WeatherStation;
 DROP TABLE IF EXISTS WeatherDescription;
 DROP TABLE IF EXISTS WeatherDescriptionDetail;
 DROP TABLE IF EXISTS WeatherDescriptionShort;
 DROP TABLE IF EXISTS WeatherIcon;
+
 
 CREATE TABLE WeatherDescriptionDetail(
 	id INTEGER(10) AUTO_INCREMENT PRIMARY KEY,
