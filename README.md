@@ -11,6 +11,6 @@
 
 ## ToDo:
 * Unit Testing
-* Implement new Database Schema - [SQL  Schema](/sql_schema.asc)
+* Implement new Database Schema - [SQL  Schema](/sql_schema.sql)
 
 * Implement SQL-Queries for REST Interface
