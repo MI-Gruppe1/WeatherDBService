@@ -18,18 +18,18 @@ DROP TABLE IF EXISTS WeatherIcon;
 CREATE TABLE WeatherDescriptionDetail(
 	id INTEGER(10) AUTO_INCREMENT PRIMARY KEY,
 	description CHAR(100)
-);
+) ENGINE = InnoDB;
 
 CREATE TABLE WeatherDescriptionShort(
 	id INTEGER(10) AUTO_INCREMENT PRIMARY KEY,
 	description CHAR(100)
-);
+) ENGINE = InnoDB;
 
 CREATE TABLE WeatherIcon(
 	id INTEGER(10) AUTO_INCREMENT PRIMARY KEY,
 	icon_code CHAR(5),
 	icon_url CHAR(150)
-);
+) ENGINE = InnoDB;
 
 CREATE TABLE WeatherDescription(
 	id INTEGER(10) AUTO_INCREMENT PRIMARY KEY,
@@ -39,14 +39,14 @@ CREATE TABLE WeatherDescription(
 	FOREIGN KEY (short_id) REFERENCES WeatherDescriptionShort(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (detail_id) REFERENCES WeatherDescriptionDetail(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY (icon_id) REFERENCES WeatherIcon(id) ON UPDATE CASCADE ON DELETE CASCADE
-);
+) ENGINE = InnoDB;
 
 CREATE TABLE WeatherStation(
 	id INTEGER(10) AUTO_INCREMENT PRIMARY KEY,
 	name CHAR(100) UNIQUE,
 	longitude double(20,3),
 	langitude double(20,3)
-);
+) ENGINE = InnoDB;
 
 CREATE TABLE WeatherData( 
 	id INTEGER(10) AUTO_INCREMENT PRIMARY KEY,
@@ -62,6 +62,6 @@ CREATE TABLE WeatherData(
 	FOREIGN KEY (icon_id) REFERENCES WeatherIcon(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (desc_id) REFERENCES WeatherDescription(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (station_id) REFERENCES WeatherStation(id) ON DELETE CASCADE ON UPDATE CASCADE
-);
+) ENGINE = InnoDB;
 
 show tables;
