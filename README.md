@@ -1,6 +1,4 @@
-# WeatherDBService
-
-# still in Progress
+# WeatherDBService - in Progress
 
 ## Function: 
 * Communication with WeatherDb via JDBC:SQL (MySQL)
@@ -11,6 +9,6 @@
 
 
 
-ToDo:
+## ToDo:
 * Unit Testing
 * Implement new Database Schema
