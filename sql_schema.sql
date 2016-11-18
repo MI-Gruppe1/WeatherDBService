@@ -4,7 +4,7 @@
 
 
 -- select database
-use testing;
+use mi;
 
 -- drop existing tables
 DROP TABLE IF EXISTS WeatherData;
