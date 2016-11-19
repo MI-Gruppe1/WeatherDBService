@@ -1,5 +1,9 @@
 package WeatherDBService.WeatherDBService;
 
+/**
+ * @author Jan-Peter Petersen 
+ */
+
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,10 +11,6 @@ import java.sql.SQLException;
 import org.json.JSONObject;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
-
-/**
- * @author Jan-Peter Petersen 
- */
 
 public class DBConnector {
 	
@@ -55,12 +55,14 @@ public class DBConnector {
 	 * @param WeatherDataObject
 	 * @throws SQLException
 	 */
-	public void insertWeatherData(WeatherDataObject weatherDataObject) throws SQLException {
-		System.out.println("enter insertWeatherData");
+	public void insertWeatherData(WeatherDataObject weatherDataObject) {
 		Connection connection = null;
+		System.out.println("\n" + weatherDataObject.toString());
 		try {
 			int stationId = insertWeatherStation(weatherDataObject.getStationName(), weatherDataObject.getLongitude(), weatherDataObject.getLatitude());
 			int descriptionId = insertWeatherDescription(weatherDataObject.getWeatherIcon(), weatherDataObject.getWeatherDesc(), weatherDataObject.getWeatherDescDetail());
+			System.out.println("StationId:" + stationId);
+			System.out.println("DescciptionId: " + descriptionId);
 			connection = getMySQLConnection();
 			String query = "INSERT INTO WeatherData (station_id, desc_id, temperature, humidity, pressure, windDeg, windSpeed, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement stmt = (PreparedStatement) connection.prepareStatement(query);
@@ -73,49 +75,46 @@ public class DBConnector {
 			stmt.setDouble(7, weatherDataObject.getWindSpeed());
 			stmt.setLong(8, weatherDataObject.getDateTime());
 			stmt.execute();
-			System.out.println("Success");
-		}  catch (SQLException e) {
-			System.out.println(e);		
-		} finally {
 			connection.close();
+			System.out.println("Success");
+		}  catch (Exception e) {
+			MailNotification.sendMail(e);
 		}
 	}
 	
 	/**
 	 * insert new WeatherDescription
-	 * @param WeatherDescriptionIcon
-	 * @param WeatherDescriptionShort
-	 * @param WeatherDescriptionDetail
+	 * @param descIcon
+	 * @param descShort
+	 * @param descDetail
 	 * @return WeatherDescriptionId
 	 * @throws SQLException
 	 */
-	private int insertWeatherDescription(String descIcon, String descShort, String descDetail) throws SQLException {
-		System.out.println("enter insertWeatherDescription");
-		int WeatherDescriptionIconId = insertWeatherIcon(descIcon);
-		int WeatherDescriptionShortId = insertWeatherDescriptionShort(descShort);
-		int WeatherDescriptionDetailId = insertWeatherDescriptionDetail(descDetail);
+	private int insertWeatherDescription(String descIcon, String descShort, String descDetail) {	
+		int weatherDescriptionIconId = insertWeatherIcon(descIcon);
+		int weatherDescriptionShortId = insertWeatherDescriptionShort(descShort);
+		int weatherDescriptionDetailId = insertWeatherDescriptionDetail(descDetail);
+		
 		Connection connection = null;
-		if (0 == checkWeatherDescription(WeatherDescriptionIconId, WeatherDescriptionShortId, WeatherDescriptionDetailId)) {
-			try {
+		int weatherDescriptionId = checkWeatherDescription(weatherDescriptionIconId, weatherDescriptionShortId, weatherDescriptionDetailId);
+		try {
+			if (0 == weatherDescriptionId) {
 				connection = getMySQLConnection();		
 				
 				String query = "INSERT INTO WeatherDescription (icon_id, short_id, detail_id) VALUES (?, ?, ?)";
 				PreparedStatement stmt = (PreparedStatement) connection.prepareStatement(query);
-				stmt.setInt(1, WeatherDescriptionIconId);
-				stmt.setInt(2, WeatherDescriptionShortId);
-				stmt.setInt(3, WeatherDescriptionDetailId);
+				stmt.setInt(1, weatherDescriptionIconId);
+				stmt.setInt(2, weatherDescriptionShortId);
+				stmt.setInt(3, weatherDescriptionDetailId);
 				stmt.execute();
-				return checkWeatherDescription(WeatherDescriptionIconId, WeatherDescriptionShortId, WeatherDescriptionDetailId);
-			} catch (SQLException e) {
-				System.out.println(e);
-				return 0;
-			} finally {
 				connection.close();
-			}
-		} else {
-			return checkWeatherDescription(WeatherDescriptionIconId, WeatherDescriptionShortId, WeatherDescriptionDetailId);
+				weatherDescriptionId = checkWeatherDescription(weatherDescriptionIconId, weatherDescriptionShortId, weatherDescriptionDetailId);
+			} else {			}
+			return weatherDescriptionId;
+		} catch (SQLException e) {
+			System.out.println(e);
+			return weatherDescriptionId;
 		}
-
 	}
 	
 	/**
@@ -126,8 +125,7 @@ public class DBConnector {
 	 * @return WeatherDescriptionId
 	 * @throws SQLException
 	 */
-	private int checkWeatherDescription(int WeatherDescriptionIconId, int WeatherDescriptionShortId, int WeatherDescriptionDetailId) throws SQLException {
-		System.out.println("enter checkWeatherDescription");
+	private int checkWeatherDescription(int WeatherDescriptionIconId, int WeatherDescriptionShortId, int WeatherDescriptionDetailId) {
 		Connection connection = null;
 		int descriptionId = 0;
 		try {
@@ -140,15 +138,13 @@ public class DBConnector {
 			stmt.executeQuery();
 			ResultSet result = stmt.getResultSet();
 			if (result.first() == true) {
-				System.out.println("existing WeatherDescription");
 				descriptionId = result.getInt("id");
 			}
+			connection.close();
 			return descriptionId;
 		} catch (SQLException e) {
 			System.out.println(e);
-			return descriptionId;
-		} finally {
-			connection.close();
+			return -1;
 		}
 	}
 	
@@ -158,8 +154,7 @@ public class DBConnector {
 	 * @return WeatherDescriptionShortId
 	 * @throws SQLException
 	 */
-	private int insertWeatherDescriptionShort(String description) throws SQLException {
-		System.out.println("enter insertWeatherDescriptionShort");
+	private int insertWeatherDescriptionShort(String description) {
 		Connection connection = null;
 		if (checkWeatherDescriptionShort(description) == 0) {
 			try {
@@ -168,12 +163,10 @@ public class DBConnector {
 				PreparedStatement stmt = connection.prepareStatement(query);
 				stmt.setString(1, description);		
 				stmt.execute();
-				System.out.println("inserted WeatherDescriptionShort");
+				connection.close();
 			} catch (SQLException e) {
 				System.out.println(e);
-			} finally {
-				connection.close();
-			}
+			} 
 		}
 		return checkWeatherDescriptionShort(description);
 	}
@@ -184,7 +177,7 @@ public class DBConnector {
 	 * @return WeatherDescriptionShortId
 	 * @throws SQLException
 	 */
-	private int checkWeatherDescriptionShort(String description) throws SQLException {
+	private int checkWeatherDescriptionShort(String description) {
 		Connection connection = null;
 		int descShortId = 0;
 		try {
@@ -197,12 +190,11 @@ public class DBConnector {
 			if (result.first() == true) {
 				descShortId = result.getInt("id"); 
 			}
+			connection.close();
 			return descShortId;
 		} catch (SQLException e) {
 			System.out.println(e);
-			return descShortId;
-		} finally {
-			connection.close();
+			return -1;
 		}
 	}
 	
@@ -212,7 +204,7 @@ public class DBConnector {
 	 * @return WeatherDescriptionDetailId
 	 * @throws SQLException
 	 */
-	private int insertWeatherDescriptionDetail(String description) throws SQLException {
+	private int insertWeatherDescriptionDetail(String description) {
 		Connection connection = null;
 		if (checkWeatherDescriptionDetail(description) == 0) {
 			try {
@@ -221,11 +213,10 @@ public class DBConnector {
 				PreparedStatement stmt = (PreparedStatement) connection.prepareStatement(query);
 				stmt.setString(1, description);		
 				stmt.execute();
+				connection.close();
 			} catch (SQLException e) {
 				System.out.println(e);
-			} finally {
-				connection.close();
-			}
+			} 
 		}
 		return checkWeatherDescriptionDetail(description);
 	}
@@ -236,7 +227,7 @@ public class DBConnector {
 	 * @return WeatherDescriptionDetailId
 	 * @throws SQLException
 	 */
-	private int checkWeatherDescriptionDetail(String description) throws SQLException {
+	private int checkWeatherDescriptionDetail(String description) {
 		Connection connection = null;
 		int descriptionDetailId = 0;
 		try {
@@ -250,12 +241,11 @@ public class DBConnector {
 			if (result.first() == true) {
 				descriptionDetailId = result.getInt("id");
 			}
+			connection.close();
 			return descriptionDetailId;
 		} catch (SQLException e) {
 			System.out.println(e);
-			return descriptionDetailId;
-		} finally {
-			connection.close();
+			return -1;
 		}
 	}
 	
@@ -265,22 +255,20 @@ public class DBConnector {
 	 * @return WeatherDescriptionIconId
 	 * @throws SQLException
 	 */
-	private int insertWeatherIcon(String icon_code) throws SQLException {
-		System.out.println("enter insertWeatherIcon");
+	private int insertWeatherIcon(String icon_code) {
 		Connection connection = null;
+		int iconId = checkWeatherDescriptionIcon(icon_code);
 		try {
-			if (checkWeatherDescriptionIcon(icon_code) == 0) {
+			if ( iconId == 0) {
 				connection = getMySQLConnection();
 				String query = "INSERT INTO WeatherDescriptionIcon (icon_code) VALUES (?)";
-				PreparedStatement stmt = connection.prepareStatement(query);
+				PreparedStatement stmt = (PreparedStatement) connection.prepareStatement(query);
 				stmt.setString(1, icon_code);		
 				stmt.execute();
-				System.out.println("inserted new WeatherStation");
+				connection.close();
 			}
 		} catch (SQLException e) {
 				System.out.println(e);
-		} finally {
-			connection.close();
 		}
 		return checkWeatherDescriptionIcon(icon_code);
 	}
@@ -291,8 +279,7 @@ public class DBConnector {
 	 * @return WeatherDescriptionIconId
 	 * @throws SQLException
 	 */
-	private int checkWeatherDescriptionIcon(String icon_code) throws SQLException {
-		System.out.println("enter checkWeatherDescriptionIcon");
+	private int checkWeatherDescriptionIcon(String icon_code) {
 		int iconId = 0;
 		Connection connection = null;
 		try {
@@ -305,13 +292,12 @@ public class DBConnector {
 			if (result.first() == true) {
 				iconId = result.getInt("id");
 			}
+			connection.close();
 			return iconId;
 		} catch (SQLException e) {
 			System.out.println(e);
-			return iconId;
-		} finally {
-			connection.close();
-		}
+			return -1;
+		} 
 	}
 	
 	/**
@@ -321,27 +307,23 @@ public class DBConnector {
 	 * @return WeatherStationId
 	 * @throws SQLException
 	 */
-	private int insertWeatherStation(String name, double longitude, double latitude) throws SQLException{
-		System.out.println("enter insertWeatherStation");
+	private int insertWeatherStation(String name, double longitude, double latitude) {
 		Connection connection = null;
-		
 		try {
 			if (checkWeatherStationId(name) == 0) {
 				// insert new WeatherStation
 				connection = getMySQLConnection();
 				String query = "INSERT INTO WeatherStation (name, longitude, latitude) VALUES (?, ?, ?)";
-				PreparedStatement stmt = connection.prepareStatement(query);
+				PreparedStatement stmt = (PreparedStatement) connection.prepareStatement(query);
 				stmt.setString(1, name);
 				stmt.setDouble(2, longitude);
 				stmt.setDouble(3, latitude);			
 				stmt.execute();
+				connection.close();
 			}
 		} catch (SQLException e) {
 			System.out.println(e);
-		} finally {
-			connection.close();
 		}
-		
 		return checkWeatherStationId(name);
 	}
 		
@@ -351,7 +333,7 @@ public class DBConnector {
 	 * @return WeatherStationId
 	 * @throws SQLException
 	 */
-	private int checkWeatherStationId(String name) throws SQLException {
+	private int checkWeatherStationId(String name) {
 		int stationId = 0;
 		Connection connection = null;
 		try {
@@ -362,14 +344,13 @@ public class DBConnector {
 			stmt.execute();
 			ResultSet result = stmt.getResultSet();
 			if (result.first() == true) {
-				stationId = result.getInt("id");		 
+				stationId = result.getInt("id");
 			}
+			connection.close();
 			return stationId;
 		} catch (SQLException e) {
 			System.out.println(e);
-			return stationId;
-		} finally {
-			connection.close();
+			return -1;
 		}
 	}
 	

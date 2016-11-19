@@ -54,7 +54,13 @@ public class WeatherDataObject {
 		this.windSpeed = windSpeed;
 		this.dateTime = dateTime;
 	}
-
+	
+	@Override
+	public String toString(){
+		String s = getStationName() + "," + getTemperature() + "," +  getHumidity() + "," +  getPressure()  + "," + getWeatherDesc()  + "," +  getWeatherDescDetail()  + "," + getWeatherIcon();
+		return s; 
+	}
+	
 	/**
 	 * Converts a JSON String into a Java object
 	 * 

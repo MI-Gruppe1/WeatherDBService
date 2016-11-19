@@ -45,8 +45,8 @@ CREATE TABLE WeatherDescription(
 CREATE TABLE WeatherStation(
 	id INTEGER(10) AUTO_INCREMENT PRIMARY KEY,
 	name CHAR(100) UNIQUE,
-	longitude double(20,3),
-	latitude double(20,3),
+	longitude double(20,2),
+	latitude double(20,2),
 	UNIQUE(longitude, latitude)
 ) ENGINE = InnoDB;
 
