@@ -1,4 +1,4 @@
-package WeatherDBService.WeatherDBService;
+package WeatherDBService;
 
 import com.google.gson.Gson;
 
