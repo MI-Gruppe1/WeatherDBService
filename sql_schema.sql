@@ -59,7 +59,7 @@ CREATE TABLE WeatherData(
 	pressure INTEGER(5),
 	windDeg INTEGER(4),
 	windSpeed DOUBLE(3,2),
-	timestamp INTEGER(15),
+	timestamp BIGINT(15),
 	insertTime DATETIME NOT NULL DEFAULT NOW(),
 	FOREIGN KEY (desc_id) REFERENCES WeatherDescription(id) ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (station_id) REFERENCES WeatherStation(id) ON DELETE CASCADE ON UPDATE CASCADE

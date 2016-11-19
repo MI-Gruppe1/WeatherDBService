@@ -98,7 +98,7 @@ public class WeatherDataObject {
 		return longitude;
 	}
 
-	public double getlatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
