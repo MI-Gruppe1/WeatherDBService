@@ -1,7 +1,7 @@
 /**
- * @author Flah-Uddin Ahmad
- * @author Andreas Loeffler
+ * @author Jan-Peter Petersen
  * @version 1.0
+ * thanks to Flah-Uddin Ahmad and Andreas Loeffler
  */
 
 package WeatherDBService.WeatherDBService;
@@ -13,15 +13,15 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 
 /**
- * MailNotification will send an E-Mail to mi.mailnotification(at)gmail.com when ever a Exception in a Crawler will appear
+ * MailNotification will send an E-Mail to miweatherservice(at)gmail.com
  */
 
 public class MailNotification {
 	  private static final String SMTP_HOST = "smtp.gmail.com";
 	  private static final int SMTP_PORT = 465;
 	  
-	  private static final String USERNAME = "mi.mailnotification@gmail.com";
-	  private static final String PASSWORD = "miws2016";
+	  private static final String USERNAME = "miweatherservice@gmail.com";
+	  private static final String PASSWORD = "!miws-16";
 	  
 	  static void sendMail(Exception e) {
 		  StringWriter sw = new StringWriter();
@@ -35,7 +35,7 @@ public class MailNotification {
 			    email.setSmtpPort(SMTP_PORT);
 			    email.setSSLOnConnect(true);
 				email.addTo(USERNAME);
-				email.setFrom(USERNAME, "StadtCrawlerService");
+				email.setFrom(USERNAME, "WeatherDBService");
 			    email.setSubject("Exception");
 			    email.setMsg(sw.toString());
 			    email.send();

@@ -21,7 +21,7 @@ public class WeatherDataObject {
 	private int pressure;
 	private int windDeg;
 	private double windSpeed;
-	private long dateTime;
+	private long timeStamp;
 
 	/**
 	 * Will construct a new WeatherDataObject and fill it with the given values
@@ -52,12 +52,21 @@ public class WeatherDataObject {
 		this.pressure = pressure;
 		this.windDeg = windDeg;
 		this.windSpeed = windSpeed;
-		this.dateTime = dateTime;
+		this.timeStamp = dateTime;
 	}
 	
 	@Override
 	public String toString(){
-		String s = getStationName() + "," + getTemperature() + "," +  getHumidity() + "," +  getPressure()  + "," + getWeatherDesc()  + "," +  getWeatherDescDetail()  + "," + getWeatherIcon();
+		String s = "name: " + getStationName() 
+				+ " temperature: " + getTemperature() 
+				+ " humidity: " + getHumidity() 
+				+ " pressure: " + getPressure()
+				+ " windDeg: " + getWindDeg()
+				+ " windSpeed: " + getWindSpeed()
+				+ " descShort: " + getWeatherDesc()  
+				+ " descDetail: " + getWeatherDescDetail()  
+				+ " descIcon: " + getWeatherIcon()
+				+ " timeStamp: " + getTimeStamp();
 		return s; 
 	}
 	
@@ -67,7 +76,7 @@ public class WeatherDataObject {
 	 * @param json
 	 * @return WeatherDataObject
 	 */
-	public static WeatherDataObject jsonToJavaObeject(String json) {
+	public static WeatherDataObject jsonToJavaObject(String json) {
 		Gson gson = new Gson();
 		WeatherDataObject weatherDataObject = gson.fromJson(json, WeatherDataObject.class);
 		return weatherDataObject;
@@ -128,7 +137,7 @@ public class WeatherDataObject {
 		return windSpeed;
 	}
 
-	public long getDateTime() {
-		return dateTime;
+	public long getTimeStamp() {
+		return timeStamp;
 	}
 }

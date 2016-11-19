@@ -4,15 +4,13 @@ import static spark.Spark.*;
 // import org.apache.log4j.BasicConfigurator;
 import org.json.JSONObject;
 
-/*
- * Author: Jan-Peter Petersen
- * E-Mail: jan-peter.petersen@haw-hamburg.de 
+/**
+ * @author: Jan-Peter Petersen
  */
 
 public class App 
 {
     public static void main( String[] args ) {
-    	
     	// info for LOGGING!
     	// http://stackoverflow.com/questions/7421612/slf4j-failed-to-load-class-org-slf4j-impl-staticloggerbinder
     	// http://stackoverflow.com/questions/12532339/no-appenders-could-be-found-for-loggerlog4j
@@ -31,7 +29,7 @@ public class App
     		String string = req.body();
     		
     		// create WeatherDataObject from JSON
-    		WeatherDataObject weatherDataObject = WeatherDataObject.jsonToJavaObeject(string);
+    		WeatherDataObject weatherDataObject = WeatherDataObject.jsonToJavaObject(string);
     		
     		// insert WeatherDataObject to Database
     		dbcon.insertWeatherData(weatherDataObject);

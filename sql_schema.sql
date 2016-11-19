@@ -47,6 +47,7 @@ CREATE TABLE WeatherStation(
 	name CHAR(100) UNIQUE,
 	longitude double(20,2),
 	latitude double(20,2),
+	api_url CHAR(255),
 	UNIQUE(longitude, latitude)
 ) ENGINE = InnoDB;
 

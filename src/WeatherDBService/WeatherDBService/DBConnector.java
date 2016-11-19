@@ -53,7 +53,6 @@ public class DBConnector {
 	/**
 	 * insert new WeatherData
 	 * @param WeatherDataObject
-	 * @throws SQLException
 	 */
 	public void insertWeatherData(WeatherDataObject weatherDataObject) {
 		Connection connection = null;
@@ -73,7 +72,7 @@ public class DBConnector {
 			stmt.setInt(5, weatherDataObject.getPressure());
 			stmt.setInt(6, weatherDataObject.getWindDeg());
 			stmt.setDouble(7, weatherDataObject.getWindSpeed());
-			stmt.setLong(8, weatherDataObject.getDateTime());
+			stmt.setLong(8, weatherDataObject.getTimeStamp());
 			stmt.execute();
 			connection.close();
 			System.out.println("Success");
@@ -88,7 +87,6 @@ public class DBConnector {
 	 * @param descShort
 	 * @param descDetail
 	 * @return WeatherDescriptionId
-	 * @throws SQLException
 	 */
 	private int insertWeatherDescription(String descIcon, String descShort, String descDetail) {	
 		int weatherDescriptionIconId = insertWeatherIcon(descIcon);
@@ -112,18 +110,17 @@ public class DBConnector {
 			} else {			}
 			return weatherDescriptionId;
 		} catch (SQLException e) {
-			System.out.println(e);
-			return weatherDescriptionId;
+			MailNotification.sendMail(e);
+			return -1;
 		}
 	}
-	
+
 	/**
 	 * check existing WeatherDescription
 	 * @param WeatherDescriptionIconId
 	 * @param WeatherDescriptionShortId
 	 * @param weatherDescriptionDetailId
 	 * @return WeatherDescriptionId
-	 * @throws SQLException
 	 */
 	private int checkWeatherDescription(int WeatherDescriptionIconId, int WeatherDescriptionShortId, int WeatherDescriptionDetailId) {
 		Connection connection = null;
@@ -143,7 +140,7 @@ public class DBConnector {
 			connection.close();
 			return descriptionId;
 		} catch (SQLException e) {
-			System.out.println(e);
+			MailNotification.sendMail(e);
 			return -1;
 		}
 	}
@@ -152,7 +149,6 @@ public class DBConnector {
 	 * insert new WeatherDescriptionShort
 	 * @param description
 	 * @return WeatherDescriptionShortId
-	 * @throws SQLException
 	 */
 	private int insertWeatherDescriptionShort(String description) {
 		Connection connection = null;
@@ -165,17 +161,16 @@ public class DBConnector {
 				stmt.execute();
 				connection.close();
 			} catch (SQLException e) {
-				System.out.println(e);
+				MailNotification.sendMail(e);
 			} 
 		}
 		return checkWeatherDescriptionShort(description);
 	}
-	
+
 	/**
 	 * check existing WeatherDescriptionShort
 	 * @param description
 	 * @return WeatherDescriptionShortId
-	 * @throws SQLException
 	 */
 	private int checkWeatherDescriptionShort(String description) {
 		Connection connection = null;
@@ -193,16 +188,15 @@ public class DBConnector {
 			connection.close();
 			return descShortId;
 		} catch (SQLException e) {
-			System.out.println(e);
+			MailNotification.sendMail(e);
 			return -1;
 		}
 	}
-	
+
 	/**
 	 * insert new WeatherDescriptionDetail
 	 * @param description
 	 * @return WeatherDescriptionDetailId
-	 * @throws SQLException
 	 */
 	private int insertWeatherDescriptionDetail(String description) {
 		Connection connection = null;
@@ -215,7 +209,7 @@ public class DBConnector {
 				stmt.execute();
 				connection.close();
 			} catch (SQLException e) {
-				System.out.println(e);
+				MailNotification.sendMail(e);
 			} 
 		}
 		return checkWeatherDescriptionDetail(description);
@@ -225,7 +219,6 @@ public class DBConnector {
 	 * check existing WeatherDescriptionDetail
 	 * @param description
 	 * @return WeatherDescriptionDetailId
-	 * @throws SQLException
 	 */
 	private int checkWeatherDescriptionDetail(String description) {
 		Connection connection = null;
@@ -244,7 +237,7 @@ public class DBConnector {
 			connection.close();
 			return descriptionDetailId;
 		} catch (SQLException e) {
-			System.out.println(e);
+			MailNotification.sendMail(e);
 			return -1;
 		}
 	}
@@ -253,13 +246,12 @@ public class DBConnector {
 	 * insert new WeatherIcon
 	 * @param icon_code
 	 * @return WeatherDescriptionIconId
-	 * @throws SQLException
 	 */
 	private int insertWeatherIcon(String icon_code) {
 		Connection connection = null;
 		int iconId = checkWeatherDescriptionIcon(icon_code);
 		try {
-			if ( iconId == 0) {
+			if (iconId == 0) {
 				connection = getMySQLConnection();
 				String query = "INSERT INTO WeatherDescriptionIcon (icon_code) VALUES (?)";
 				PreparedStatement stmt = (PreparedStatement) connection.prepareStatement(query);
@@ -268,16 +260,15 @@ public class DBConnector {
 				connection.close();
 			}
 		} catch (SQLException e) {
-				System.out.println(e);
+			MailNotification.sendMail(e);
 		}
 		return checkWeatherDescriptionIcon(icon_code);
 	}
-	
+
 	/**
 	 * check existing WeatherDescriptionIcon
 	 * @param icon_code
 	 * @return WeatherDescriptionIconId
-	 * @throws SQLException
 	 */
 	private int checkWeatherDescriptionIcon(String icon_code) {
 		int iconId = 0;
@@ -295,17 +286,16 @@ public class DBConnector {
 			connection.close();
 			return iconId;
 		} catch (SQLException e) {
-			System.out.println(e);
+			MailNotification.sendMail(e);
 			return -1;
 		} 
 	}
-	
+
 	/**
 	 * @param name 
 	 * @param longitude
 	 * @param latitude
 	 * @return WeatherStationId
-	 * @throws SQLException
 	 */
 	private int insertWeatherStation(String name, double longitude, double latitude) {
 		Connection connection = null;
@@ -322,7 +312,7 @@ public class DBConnector {
 				connection.close();
 			}
 		} catch (SQLException e) {
-			System.out.println(e);
+			MailNotification.sendMail(e);
 		}
 		return checkWeatherStationId(name);
 	}
@@ -331,7 +321,6 @@ public class DBConnector {
 	 * check existing WeatherStationId
 	 * @param name
 	 * @return WeatherStationId
-	 * @throws SQLException
 	 */
 	private int checkWeatherStationId(String name) {
 		int stationId = 0;
@@ -349,23 +338,71 @@ public class DBConnector {
 			connection.close();
 			return stationId;
 		} catch (SQLException e) {
-			System.out.println(e);
+			MailNotification.sendMail(e);
 			return -1;
 		}
 	}
-	
-	// TODO
-	public String selectTemperaturAtSpecificTime() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver").newInstance();
-		Connection connection = (Connection) DriverManager.getConnection("jdbc:mysql://"+ this.ip + ":" + this.port + "/" + this.database, this.user, this.passwort);
-		String query = "SELECT temperature FROM crawledWeatherData LIMIT 1;";
-		Statement statement = (Statement) connection.createStatement();
-		ResultSet result = statement.executeQuery(query);
-		connection.close();
-		result.first();
-		return result.getString("temperature");
+
+	/**
+	 * get specific WeatherDataObject from Database
+	 * @param long
+	 * @param lat
+	 * @param time
+	 */
+	public WeatherDataObject getWeatherDataObject(double longi, double lati, long time) {
+		String weatherIcon = null;
+		String weatherDesc = null;
+		String weatherDescDetail = null;
+		String stationName = null;
+		double longitude = 0.0;
+		double latitude = 0.0;
+		double temperature = 0.0;
+		int humidity = 0;
+		int pressure = 0;
+		int windDeg = 0;
+		int windSpeed = 0; 
+		long timeStamp = 0;
+		
+		String query = "SELECT WeatherData.temperature, WeatherData.humidity, WeatherData.pressure, WeatherData.windDeg, WeatherData.windSpeed, WeatherData.timestamp, "
+				+ "WeatherStation.name, WeatherStation.longitude, WeatherStation.latitude, "
+				+ "WeatherDescriptionDetail.description, WeatherDescriptionShort.description, WeatherDescriptionIcon.icon_code "
+				+ "FROM WeatherStation, WeatherData, WeatherDescription, WeatherDescriptionDetail, WeatherDescriptionShort, WeatherDescriptionIcon "
+				+ "WHERE WeatherData.timestamp = ? AND WeatherStation.longitude = ? AND WeatherStation.latitude = ? AND WeatherData.desc_id = WeatherDescription.id AND WeatherDescription.detail_id = WeatherDescriptionDetail.id AND WeatherDescription.short_id = WeatherDescriptionShort.id AND WeatherDescription.icon_id = WeatherDescriptionIcon.id;";
+		
+		try {
+			Connection connection = getMySQLConnection();
+			PreparedStatement stmt = (PreparedStatement) connection.prepareStatement(query);
+			stmt.setLong(1, time);
+			stmt.setDouble(2, longi);
+			stmt.setDouble(3, lati);
+			stmt.execute();
+			ResultSet result = stmt.getResultSet();
+			if (result.first() == true){
+				temperature = result.getDouble("WeatherData.temperature");
+				humidity = result.getInt("WeatherData.humidity");
+				pressure = result.getInt("WeatherData.pressure");
+				windDeg = result.getInt("WeatherData.windDeg");
+				windSpeed = result.getInt("WeatherData.windSpeed");
+				timeStamp = result.getLong("WeatherData.timestamp");	
+				weatherIcon = result.getString("WeatherDescriptionIcon.icon_code");
+				weatherDesc = result.getString("WeatherDescriptionShort.description");
+				weatherDescDetail = result.getString("WeatherDescriptionDetail.description");
+				stationName = result.getString("WeatherStation.name");
+				longitude = result.getDouble("WeatherStation.longitude");
+				latitude = result.getDouble("WeatherStation.latitude");
+			}			
+		} catch (SQLException e) {
+			MailNotification.sendMail(e);	
+		}
+		WeatherDataObject weatherDataObject = new WeatherDataObject(weatherIcon, weatherDesc, weatherDescDetail, stationName, longitude, latitude, temperature, humidity, pressure, windDeg, windSpeed, timeStamp);
+		return weatherDataObject;
 	}
 	
+	// TODO
+	public double selectTemperaturAtSpecificTime() {
+		return 0.0;
+	}
+
 	// TODO
 	public double selectPrecipitationAtSpecificTime() {
 		return 0.0;
