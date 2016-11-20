@@ -1,5 +1,9 @@
 package WeatherDBService.WeatherDBService;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.gson.Gson;
 
 /**
@@ -139,5 +143,118 @@ public class WeatherDataObject {
 
 	public long getTimeStamp() {
 		return timeStamp;
+	}
+	
+	
+	
+	
+	
+	private static final Set<String> goodWeatherSet = new HashSet<String>(Arrays.asList(
+			"clear sky", 
+			"few clouds", 
+			"scattered clouds", 
+			"calm", 
+			"light breeze", 
+			"gentle breeze", 
+			"moderate breeze", 
+			"fresh breeze"
+			));
+	
+	private static final Set<String> okWeatherSet = new HashSet<String>(Arrays.asList(
+			"broken clouds", 
+			"overcast clouds", 
+			"cold", 
+			"hot", 
+			"windy", 
+			"strong breeze" 
+			));
+	
+	private static final Set<String> badWeatherSet = new HashSet<String>(Arrays.asList( 
+			"light intensity drizzle", 
+			"drizzle", 
+			"heavy intensity drizzle", 
+			"light intensity drizzle rain", 
+			"drizzle rain", 
+			"shower rain and drizzle", 
+			"shower drizzle", 
+			"light rain", 
+			"moderate rain", 
+			"light intensity shower rain", 
+			"shower rain", 
+			"light snow", 
+			"snow", 
+			"light rain and snow", 
+			"rain and snow", 
+			"light shower snow", 
+			"shower snow", 
+			"mist", 
+			"fog", 
+			"dust", 
+			"high wind, near gale"
+			));
+	
+	private static final Set<String> reallyBadWeatherSet = new HashSet<String>(Arrays.asList(
+			"thunderstorm with light rain", 
+			"thunderstorm with rain", 
+			"thunderstorm with heavy rain", 
+			"light thunderstorm", 
+			"thunderstorm", 
+			"heavy thunderstorm", 
+			"ragged thunderstorm", 
+			"thunderstorm with light drizzle", 
+			"thunderstorm with drizzle", 
+			"thunderstorm with heavy drizzle", 
+			"heavy intensity drizzle rain", 
+			"heavy shower rain and drizzle", 
+			"heavy intensity rain", 
+			"very heavy rain", 
+			"extreme rain", 
+			"freezing rain", 
+			"heavy intensity shower rain", 
+			"ragged shower rain", 
+			"heavy snow", 
+			"sleet", 
+			"shower sleet", 
+			"heavy shower snow", 
+			"haze", 
+			"sand, dust whirls", 
+			"sand", 
+			"squalls", 
+			"hail", 
+			"gale"
+			));
+	
+	private static final Set<String> fuckThisImStayingHomeWeatherSet = new HashSet<String>(Arrays.asList(
+			"smoke", 
+			"sand, dust whirls", 
+			"volcanic ash", 
+			"tornado", 
+			"tornado", 
+			"tropical storm", 
+			"hurricane", 
+			"severe gale", 
+			"storm", 
+			"violent storm", 
+			"hurricane"));
+	
+	public double evaluateWeatherCondition(){
+		if (goodWeatherSet.contains(weatherDescDetail)) {
+			return 0.0;
+		}
+		else if (okWeatherSet.contains(weatherDescDetail)){
+			return 0.25;
+		}
+		else if (badWeatherSet.contains(weatherDescDetail)){
+			return 0.5;
+		}
+		else if (reallyBadWeatherSet.contains(weatherDescDetail)){
+			return 0.75;
+		}
+		else if (fuckThisImStayingHomeWeatherSet.contains(weatherDescDetail)){
+			return 1.0;
+		}
+		else{
+			return 0.0;
+		}
 	}
 }

@@ -8,6 +8,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
+
 import org.json.JSONObject;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
@@ -398,19 +400,33 @@ public class DBConnector {
 		return weatherDataObject;
 	}
 	
-	// TODO
-	public double selectTemperaturAtSpecificTime() {
-		return 0.0;
+	public double getTemperaturAtSpecificTime(String timeString, String lonString, String latString) {
+		
+		long time = Long.parseLong(timeString);
+		double lon = Double.parseDouble(lonString);
+		double lat = Double.parseDouble(latString);
+		
+		WeatherDataObject wd = getWeatherDataObject(lon, lat, time);
+		return wd.getTemperature();
 	}
 
-	// TODO
-	public double selectPrecipitationAtSpecificTime() {
-		return 0.0;
+	public double getWeatherConditionAtSpecificTime(String timeString, String lonString, String latString) {
+		
+		long time = Long.parseLong(timeString);
+		double lon = Double.parseDouble(lonString);
+		double lat = Double.parseDouble(latString);
+		WeatherDataObject wd = getWeatherDataObject(lon, lat, time);
+		
+		return wd.evaluateWeatherCondition();
 	}
 	
-	// TODO
-	public JSONObject selectCurrentWeather() {
-		JSONObject k = new JSONObject();
-		return k;
+	public String getCurrentWeather(String lonString, String latString) {
+		
+		long time = new Date().getTime(); //get current time
+		double lon = Double.parseDouble(lonString);
+		double lat = Double.parseDouble(latString);
+		WeatherDataObject wd = getWeatherDataObject(lon, lat, time);
+		
+		return wd.toJSON();
 	}
 }
