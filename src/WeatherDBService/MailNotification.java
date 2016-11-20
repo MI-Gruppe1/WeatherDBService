@@ -4,7 +4,7 @@
  * thanks to Flah-Uddin Ahmad and Andreas Loeffler
  */
 
-package WeatherDBService.WeatherDBService;
+package WeatherDBService;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

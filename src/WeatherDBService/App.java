@@ -1,4 +1,4 @@
-package WeatherDBService.WeatherDBService;
+package WeatherDBService;
 import static spark.Spark.*;
 
 // import org.apache.log4j.BasicConfigurator;

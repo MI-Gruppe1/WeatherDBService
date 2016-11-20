@@ -1,4 +1,4 @@
-package WeatherDBService.WeatherDBService;
+package WeatherDBService;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -39,11 +39,11 @@ public class WeatherDataObject {
 	 * @param pressure
 	 * @param windDeg
 	 * @param windSpeed
-	 * @param dateTime
+	 * @param timeStamp
 	 */
 	public WeatherDataObject(String weatherIcon, String weatherDesc, String weatherDescDetail, String stationName,
 			double longitude, double latitude, double temperature, int humidity, int pressure, int windDeg,
-			double windSpeed, long dateTime) {
+			double windSpeed, long timeStamp) {
 		super();
 		this.weatherIcon = weatherIcon;
 		this.weatherDesc = weatherDesc;
@@ -56,7 +56,7 @@ public class WeatherDataObject {
 		this.pressure = pressure;
 		this.windDeg = windDeg;
 		this.windSpeed = windSpeed;
-		this.timeStamp = dateTime;
+		this.timeStamp = timeStamp;
 	}
 	
 	@Override

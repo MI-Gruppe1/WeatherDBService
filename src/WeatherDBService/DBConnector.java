@@ -1,4 +1,4 @@
-package WeatherDBService.WeatherDBService;
+package WeatherDBService;
 
 /**
  * @author Jan-Peter Petersen 
