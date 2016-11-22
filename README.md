@@ -10,7 +10,6 @@
 
 
 ## ToDo:
+* setup correct timezone (currently manuel fixed)
 * Unit Testing
-* Implement new Database Schema - [SQL  Schema](/sql_schema.sql)
-
 * Implement SQL-Queries for REST Interface
