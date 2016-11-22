@@ -402,9 +402,21 @@ public class DBConnector {
 	
 	public double getTemperaturAtSpecificTime(String timeString, String lonString, String latString) {
 		
-		long time = Long.parseLong(timeString);
-		double lon = Double.parseDouble(lonString);
-		double lat = Double.parseDouble(latString);
+		long time;
+		double lon;
+		double lat;
+		if (timeString.equals("null")) {
+			time = System.currentTimeMillis() / 1000L; //get current unix time
+		}else{
+			time = Long.parseLong(timeString);
+		}
+		if (lonString.equals("null") || latString.equals("null")) { //Default is Hamburg-Mitte
+			lon = 10.02;
+			lat = 53.55;
+		}else{
+			lon = Double.parseDouble(lonString);
+			lat = Double.parseDouble(latString);
+		}
 		
 		WeatherDataObject wd = getWeatherDataObject(lon, lat, time);
 		return wd.getTemperature();
@@ -412,9 +424,22 @@ public class DBConnector {
 
 	public double getWeatherConditionAtSpecificTime(String timeString, String lonString, String latString) {
 		
-		long time = Long.parseLong(timeString);
-		double lon = Double.parseDouble(lonString);
-		double lat = Double.parseDouble(latString);
+		long time;
+		double lon;
+		double lat;
+		if (timeString.equals("null")) {
+			time = System.currentTimeMillis() / 1000L; //get current unix time
+		}else{
+			time = Long.parseLong(timeString);
+		}
+		if (lonString.equals("null") || latString.equals("null")) { //Default is Hamburg-Mitte
+			lon = 10.02;
+			lat = 53.55;
+		}else{
+			lon = Double.parseDouble(lonString);
+			lat = Double.parseDouble(latString);
+		}
+		
 		WeatherDataObject wd = getWeatherDataObject(lon, lat, time);
 		
 		return wd.evaluateWeatherCondition();
@@ -422,11 +447,19 @@ public class DBConnector {
 	
 	public String getCurrentWeather(String lonString, String latString) {
 		
-		long time = new Date().getTime(); //get current time
-		double lon = Double.parseDouble(lonString);
-		double lat = Double.parseDouble(latString);
+		long time = System.currentTimeMillis() / 1000L; //get current unix time
+		double lon;
+		double lat;
+		if (lonString.equals("null") || latString.equals("null")) { //Default is Hamburg-Mitte
+			lon = 10.02;
+			lat = 53.55;
+		}else{
+			lon = Double.parseDouble(lonString);
+			lat = Double.parseDouble(latString);
+		}
 		WeatherDataObject wd = getWeatherDataObject(lon, lat, time);
 		
 		return wd.toJSON();
 	}
+	
 }
