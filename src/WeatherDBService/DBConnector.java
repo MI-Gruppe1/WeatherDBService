@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.json.JSONObject;
@@ -364,19 +365,18 @@ public class DBConnector {
 		int windDeg = 0;
 		int windSpeed = 0; 
 		long timeStamp = 0;
+		WeatherStationObject station = getClosestWeatherStation(longi, lati);
 		
 		String query = "SELECT WeatherData.temperature, WeatherData.humidity, WeatherData.pressure, WeatherData.windDeg, WeatherData.windSpeed, WeatherData.timestamp, "
-				+ "WeatherStation.name, WeatherStation.longitude, WeatherStation.latitude, "
 				+ "WeatherDescriptionDetail.description, WeatherDescriptionShort.description, WeatherDescriptionIcon.icon_code "
 				+ "FROM WeatherStation, WeatherData, WeatherDescription, WeatherDescriptionDetail, WeatherDescriptionShort, WeatherDescriptionIcon "
-				+ "WHERE WeatherData.timestamp = ? AND WeatherStation.longitude = ? AND WeatherStation.latitude = ? AND WeatherData.desc_id = WeatherDescription.id AND WeatherDescription.detail_id = WeatherDescriptionDetail.id AND WeatherDescription.short_id = WeatherDescriptionShort.id AND WeatherDescription.icon_id = WeatherDescriptionIcon.id;";
+				+ "WHERE WeatherData.timestamp = ? AND WeatherStation.id = ? AND WeatherData.desc_id = WeatherDescription.id AND WeatherDescription.detail_id = WeatherDescriptionDetail.id AND WeatherDescription.short_id = WeatherDescriptionShort.id AND WeatherDescription.icon_id = WeatherDescriptionIcon.id;";
 		
 		try {
 			Connection connection = getMySQLConnection();
 			PreparedStatement stmt = (PreparedStatement) connection.prepareStatement(query);
 			stmt.setLong(1, time);
-			stmt.setDouble(2, longi);
-			stmt.setDouble(3, lati);
+			stmt.setDouble(2, station.getId());
 			stmt.execute();
 			ResultSet result = stmt.getResultSet();
 			if (result.first() == true){
@@ -389,9 +389,9 @@ public class DBConnector {
 				weatherIcon = result.getString("WeatherDescriptionIcon.icon_code");
 				weatherDesc = result.getString("WeatherDescriptionShort.description");
 				weatherDescDetail = result.getString("WeatherDescriptionDetail.description");
-				stationName = result.getString("WeatherStation.name");
-				longitude = result.getDouble("WeatherStation.longitude");
-				latitude = result.getDouble("WeatherStation.latitude");
+				stationName = station.getStationName();
+				longitude = station.getLongitude();
+				latitude = station.getLatitude();
 			}			
 		} catch (SQLException e) {
 			MailNotification.sendMail(e);	
@@ -399,6 +399,54 @@ public class DBConnector {
 		WeatherDataObject weatherDataObject = new WeatherDataObject(weatherIcon, weatherDesc, weatherDescDetail, stationName, longitude, latitude, temperature, humidity, pressure, windDeg, windSpeed, timeStamp);
 		return weatherDataObject;
 	}
+	
+	/**
+	 * gets all Weatherstations from Database
+	 */
+	private ArrayList <WeatherStationObject> getAllWeatherStations() {
+		
+		int id = 0;
+		String stationName = "";
+		double longitude = 0.0;
+		double latitude = 0.0;
+		ArrayList <WeatherStationObject> stations = new ArrayList<>();
+		
+		String query = "SELECT WeatherStation.id, WeatherStation.name, WeatherStation.longitude, WeatherStation.latitude FROM WeatherStation";
+		
+		try {
+			Connection connection = getMySQLConnection();
+			PreparedStatement stmt = (PreparedStatement) connection.prepareStatement(query);
+			stmt.execute();
+			ResultSet result = stmt.getResultSet();
+			while (result.next()) {
+				id = result.getInt("WeatherStation.id");
+				stationName = result.getString("WeatherStation.name");
+				longitude = result.getDouble("WeatherStation.longitude");
+				latitude = result.getDouble("WeatherStation.latitude");
+				WeatherStationObject station = new WeatherStationObject(id, stationName, longitude, latitude);
+				stations.add(station);
+			}
+		} catch (SQLException e) {
+			MailNotification.sendMail(e);	
+		}
+		
+		return stations;
+	}
+	
+	private WeatherStationObject getClosestWeatherStation(double lon, double lat) {
+		ArrayList <WeatherStationObject> stations = getAllWeatherStations();
+		double closestDistance = Double.MAX_VALUE;
+		WeatherStationObject closestStation = stations.get(0);
+		for (WeatherStationObject station : stations) {
+			double distance = station.getDistanceTo(lon, lat); 
+			if (distance <= closestDistance) {
+				closestDistance = distance;
+				closestStation = station;
+			}
+		}
+		return closestStation;
+	}
+	
 	
 	public double getTemperaturAtSpecificTime(String timeString, String lonString, String latString) {
 		
