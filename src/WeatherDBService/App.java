@@ -3,6 +3,7 @@ import static spark.Spark.*;
 
 // import org.apache.log4j.BasicConfigurator;
 import org.json.JSONObject;
+import org.omg.Messaging.SyncScopeHelper;
 
 /**
  * @author: Jan-Peter Petersen
@@ -20,9 +21,9 @@ public class App
     	DBConnector dbcon = new DBConnector("172.17.0.1", "3307", "mi", "mi", "miws16");
     	
     	// REST interfaces, specification @ WeatherDBService.json
-    	get("/temperatureAtTime", (req, res) -> dbcon.getTemperaturAtSpecificTime(req.queryParams("time"), req.queryParams("lon"), req.queryParams("lat")));
-    	get("/weatherConditionAtTime ", (req, res) -> dbcon.getWeatherConditionAtSpecificTime(req.queryParams("time"), req.queryParams("lon"), req.queryParams("lat")));
-    	get("/currentWeather", (req, res) -> dbcon.getCurrentWeather(req.queryParams("lon"), req.queryParams("lat")));
+    	get("/temperatureAtTime/:time/:lon/:lat", (req, res) -> dbcon.getTemperaturAtSpecificTime(req.params(":time"), req.params(":lon"), req.params(":lat")));
+    	get("/weatherConditionAtTime/:time/:lon/:lat", (req, res) -> dbcon.getWeatherConditionAtSpecificTime(req.params(":time"), req.params(":lon"), req.params(":lat")));
+    	get("/currentWeather/:lon/:lat", (req, res) -> dbcon.getCurrentWeather(req.params(":lon"), req.params(":lat")));
     	post("/newWeatherData", (req, res) -> {
     		
     		// get JSON from request body
