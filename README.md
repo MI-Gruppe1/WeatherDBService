@@ -13,3 +13,5 @@
 * setup correct timezone (currently manuel fixed)
 * Unit Testing
 * Implement SQL-Queries for REST Interface
+* Service testing
+* Implement find closest weatherData in time
