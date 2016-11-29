@@ -369,7 +369,8 @@ public class DBConnector {
 		String query = "SELECT WeatherData.temperature, WeatherData.humidity, WeatherData.pressure, WeatherData.windDeg, WeatherData.windSpeed, WeatherData.timestamp, "
 				+ "WeatherDescriptionDetail.description, WeatherDescriptionShort.description, WeatherDescriptionIcon.icon_code "
 				+ "FROM WeatherStation, WeatherData, WeatherDescription, WeatherDescriptionDetail, WeatherDescriptionShort, WeatherDescriptionIcon "
-				+ "WHERE WeatherData.timestamp = ? AND WeatherStation.id = ? AND WeatherData.desc_id = WeatherDescription.id AND WeatherDescription.detail_id = WeatherDescriptionDetail.id AND WeatherDescription.short_id = WeatherDescriptionShort.id AND WeatherDescription.icon_id = WeatherDescriptionIcon.id;";
+				+ "WHERE WeatherData.timestamp = (SELECT timestamp FROM WeatherData ORDER BY abs(timeStamp - ?) LIMIT 1) " 
+				+ "AND WeatherStation.id = ? AND WeatherData.desc_id = WeatherDescription.id AND WeatherDescription.detail_id = WeatherDescriptionDetail.id AND WeatherDescription.short_id = WeatherDescriptionShort.id AND WeatherDescription.icon_id = WeatherDescriptionIcon.id;";
 		
 		try {
 			Connection connection = getMySQLConnection();

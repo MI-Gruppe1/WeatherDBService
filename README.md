@@ -10,8 +10,7 @@
 
 
 ## ToDo:
-* setup correct timezone (currently manuel fixed)
+* setup correct timezone (currently manual fix)
 * Unit Testing
-* Implement SQL-Queries for REST Interface
 * Service testing
-* Implement find closest weatherData in time
+
