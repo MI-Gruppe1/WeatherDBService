@@ -1,19 +1,18 @@
 package WeatherDBService;
 
 /**
- * @author Jan-Peter Petersen 
+ * @author Jan-Peter Petersen & Johannes Berger
  */
 
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
 
-import org.json.JSONObject;
 import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
+
+import java.util.ArrayList;
+
 
 public class DBConnector {
 	

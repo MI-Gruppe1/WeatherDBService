@@ -254,7 +254,7 @@ public class WeatherDataObject {
 			return 1.0;
 		}
 		else{
-			return 0.0;
+			return 0.0; //Return perfect weather condition in case of unknown string
 		}
 	}
 }

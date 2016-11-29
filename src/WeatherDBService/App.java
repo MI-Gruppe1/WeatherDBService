@@ -1,12 +1,11 @@
 package WeatherDBService;
+
 import static spark.Spark.*;
 
 // import org.apache.log4j.BasicConfigurator;
-import org.json.JSONObject;
-import org.omg.Messaging.SyncScopeHelper;
 
 /**
- * @author: Jan-Peter Petersen
+ * @author: Jan-Peter Petersen & Johannes Berger
  */
 
 public class App 
