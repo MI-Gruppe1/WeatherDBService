@@ -2,6 +2,8 @@ package WeatherDBService;
 
 /**
  * @author Jan-Peter Petersen & Johannes Berger
+ * 
+ * Utility functions that connect to the DB
  */
 
 import java.sql.DriverManager;
@@ -433,6 +435,9 @@ public class DBConnector {
 		return stations;
 	}
 	
+	/**
+	 * gets the closest Weatherstation to lon, lat from Database
+	 */
 	private WeatherStationObject getClosestWeatherStation(double lon, double lat) {
 		ArrayList <WeatherStationObject> stations = getAllWeatherStations();
 		double closestDistance = Double.MAX_VALUE;
@@ -447,7 +452,14 @@ public class DBConnector {
 		return closestStation;
 	}
 	
-	
+	/**
+	 * returns the temperature for a specified time and place. If no time is specified it defaults to the current time
+	 *
+	 * @param timeString Time stamp as String
+	 * @param lonString Longitude as String
+	 * @param latString Latitude as String
+	 * @return temperature
+	 */
 	public double getTemperaturAtSpecificTime(String timeString, String lonString, String latString) {
 		
 		long time;
@@ -470,6 +482,14 @@ public class DBConnector {
 		return wd.getTemperature();
 	}
 
+	/**
+	 * returns the weather condition for a specified time and place. If no time is specified it defaults to the current time. if no place is specified it defaults to hamburg-mitte.
+	 *
+	 * @param timeString Time stamp as String
+	 * @param lonString Longitude as String
+	 * @param latString Latitude as String
+	 * @return weather Condition
+	 */
 	public double getWeatherConditionAtSpecificTime(String timeString, String lonString, String latString) {
 		
 		long time;
@@ -493,11 +513,24 @@ public class DBConnector {
 		return wd.evaluateWeatherCondition();
 	}
 	
-	public String getCurrentWeather(String lonString, String latString) {
+	/**
+	 * * returns the complete weather data for a specified time and place. If no time is specified it defaults to the current time. if no place is specified it defaults to hamburg-mitte.
+	 *
+	 * @param timeString Time stamp as String
+	 * @param lonString Longitude as String
+	 * @param latString Latitude as String
+	 * @return weather Data
+	 */
+	public String getWeatherAtSpecificTime(String timeString, String lonString, String latString) {
 		
-		long time = System.currentTimeMillis() / 1000L; //get current unix time
+		long time;
 		double lon;
 		double lat;
+		if (timeString.equals("null")) {
+			time = System.currentTimeMillis() / 1000L; //get current unix time
+		}else{
+			time = Long.parseLong(timeString);
+		}
 		if (lonString.equals("null") || latString.equals("null")) { //Default is Hamburg-Mitte
 			lon = 10.02;
 			lat = 53.55;

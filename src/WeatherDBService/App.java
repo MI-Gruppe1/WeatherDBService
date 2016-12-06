@@ -6,6 +6,9 @@ import static spark.Spark.*;
 
 /**
  * @author: Jan-Peter Petersen & Johannes Berger
+ * 
+ * Starts the Weather Data Base Service and connects to the mysql DB
+ * 
  */
 
 public class App 
@@ -22,7 +25,7 @@ public class App
     	// REST interfaces, specification @ WeatherDBService.json
     	get("/temperatureAtTime", (req, res) -> dbcon.getTemperaturAtSpecificTime(req.queryParams("time"), req.queryParams("lon"), req.queryParams("lat")));
     	get("/weatherConditionAtTime", (req, res) -> dbcon.getWeatherConditionAtSpecificTime(req.queryParams("time"), req.queryParams("lon"), req.queryParams("lat")));
-    	get("/currentWeather", (req, res) -> dbcon.getCurrentWeather(req.queryParams("lon"), req.queryParams("lat")));
+    	get("/weatherAtTime", (req, res) -> dbcon.getWeatherAtSpecificTime(req.queryParams("time"), req.queryParams("lon"), req.queryParams("lat")));
     	post("/newWeatherData", (req, res) -> {
     		
     		// get JSON from request body
