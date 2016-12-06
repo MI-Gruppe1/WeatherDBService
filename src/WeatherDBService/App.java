@@ -23,9 +23,9 @@ public class App
     	DBConnector dbcon = new DBConnector("172.17.0.1", "3307", "mi", "mi", "miws16");
     	
     	// REST interfaces, specification @ WeatherDBService.json
-    	get("/temperatureAtTime", (req, res) -> dbcon.getTemperaturAtSpecificTime(req.queryParams("time"), req.queryParams("lon"), req.queryParams("lat")));
-    	get("/weatherConditionAtTime", (req, res) -> dbcon.getWeatherConditionAtSpecificTime(req.queryParams("time"), req.queryParams("lon"), req.queryParams("lat")));
-    	get("/weatherAtTime", (req, res) -> dbcon.getWeatherAtSpecificTime(req.queryParams("time"), req.queryParams("lon"), req.queryParams("lat")));
+    	get("/temperatureAtTime", (req, res) -> dbcon.getTemperaturAtSpecificTime(req.queryParams("time"), req.queryParams("lon"), req.queryParams("lat"))); //Temperature as Double
+    	get("/weatherConditionAtTime", (req, res) -> dbcon.getWeatherConditionAtSpecificTime(req.queryParams("time"), req.queryParams("lon"), req.queryParams("lat"))); //Weather Condition as Double: 0 = perfect weather, 1.0 = really bad weather
+    	get("/weatherAtTime", (req, res) -> dbcon.getWeatherAtSpecificTime(req.queryParams("time"), req.queryParams("lon"), req.queryParams("lat"))); //returns the complete weather object
     	post("/newWeatherData", (req, res) -> {
     		
     		// get JSON from request body
