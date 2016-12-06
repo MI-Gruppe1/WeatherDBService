@@ -74,7 +74,7 @@ public class DBConnector {
 			stmt.setDouble(3, weatherDataObject.getTemperature());
 			stmt.setInt(4, weatherDataObject.getHumidity());
 			stmt.setInt(5, weatherDataObject.getPressure());
-			stmt.setInt(6, weatherDataObject.getWindDeg());
+			stmt.setDouble(6, weatherDataObject.getWindDeg());
 			stmt.setDouble(7, weatherDataObject.getWindSpeed());
 			stmt.setLong(8, weatherDataObject.getTimeStamp());
 			stmt.execute();
@@ -363,8 +363,8 @@ public class DBConnector {
 		double temperature = 0.0;
 		int humidity = 0;
 		int pressure = 0;
-		int windDeg = 0;
-		int windSpeed = 0; 
+		double windDeg = 0;
+		double windSpeed = 0; 
 		long timeStamp = 0;
 		WeatherStationObject station = getClosestWeatherStation(longi, lati);
 		
@@ -385,8 +385,8 @@ public class DBConnector {
 				temperature = result.getDouble("WeatherData.temperature");
 				humidity = result.getInt("WeatherData.humidity");
 				pressure = result.getInt("WeatherData.pressure");
-				windDeg = result.getInt("WeatherData.windDeg");
-				windSpeed = result.getInt("WeatherData.windSpeed");
+				windDeg = result.getDouble("WeatherData.windDeg");
+				windSpeed = result.getDouble("WeatherData.windSpeed");
 				timeStamp = result.getLong("WeatherData.timestamp");	
 				weatherIcon = result.getString("WeatherDescriptionIcon.icon_code");
 				weatherDesc = result.getString("WeatherDescriptionShort.description");

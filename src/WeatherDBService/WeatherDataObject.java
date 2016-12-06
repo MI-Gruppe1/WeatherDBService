@@ -23,7 +23,7 @@ public class WeatherDataObject {
 	private double temperature;
 	private int humidity;
 	private int pressure;
-	private int windDeg;
+	private double windDeg;
 	private double windSpeed;
 	private long timeStamp;
 
@@ -42,7 +42,7 @@ public class WeatherDataObject {
 	 * @param timeStamp
 	 */
 	public WeatherDataObject(String weatherIcon, String weatherDesc, String weatherDescDetail, String stationName,
-			double longitude, double latitude, double temperature, int humidity, int pressure, int windDeg,
+			double longitude, double latitude, double temperature, int humidity, int pressure, double windDeg,
 			double windSpeed, long timeStamp) {
 		super();
 		this.weatherIcon = weatherIcon;
@@ -133,7 +133,7 @@ public class WeatherDataObject {
 		return pressure;
 	}
 
-	public int getWindDeg() {
+	public double getWindDeg() {
 		return windDeg;
 	}
 
