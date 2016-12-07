@@ -36,11 +36,10 @@ public class MailNotification {
 			    email.setSSLOnConnect(true);
 				email.addTo(USERNAME);
 				email.setFrom(USERNAME, "WeatherDBService");
-			    email.setSubject("Exception");
+			    email.setSubject("Exception in WeatherDBService");
 			    email.setMsg(sw.toString());
 			    email.send();
 			} catch (EmailException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 	  }
