@@ -1,0 +1,200 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "0.0.0.1",
+        "title": "<WeatherDBService>"
+    },
+    "paths": {
+        "/temperatureAtTime": {
+            "get": {
+                "description": "Return temperatur in celsius for specific time\n",
+                "parameters": [
+                    {
+                        "name": "time",
+                        "in": "query",
+                        "description": "unix timestamp",
+                        "type": "integer",
+                    },
+                    {
+                        "name": "lon",
+                        "in": "query",
+                        "description": "Longitude",
+                        "type": "integer",
+                    },
+                    {
+                        "name": "lat",
+                        "in": "query",
+                        "description": "Latitude",
+                        "type": "integer",
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "title": "Temperature",
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        },
+        "/WeatherConditionAtTime": {
+            "get": {
+                "description": "Return Weathercondition for specific time and place, refers long and lat\n",
+                "parameters": [
+                   {
+                        "name": "time",
+                        "in": "query",
+                        "description": "unix timestamp",
+                        "type": "integer",
+                    },
+                    {
+                        "name": "lon",
+                        "in": "query",
+                        "description": "Longitude",
+                        "type": "integer",
+                    },
+                    {
+                        "name": "lat",
+                        "in": "query",
+                        "description": "Latitude",
+                        "type": "integer",
+                    },
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "title": "weathercondition",
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        },
+        "/weatherAtTime": {
+            "get": {
+                "description": "Return Weather for specific Time and place\n",
+                 "parameters": [
+                   {
+                        "name": "time",
+                        "in": "query",
+                        "description": "unix timestamp",
+                        "type": "integer",
+                    },
+                    {
+                        "name": "lon",
+                        "in": "query",
+                        "description": "Longitude",
+                        "type": "integer",
+                    },
+                    {
+                        "name": "lat",
+                        "in": "query",
+                        "description": "Latitude",
+                        "type": "integer",
+                    },
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "title": "Current Weather",
+                            "type": "object",
+                            "properties": {
+                                "stationName": {
+                                    "type": "string"
+                                },
+                                "weatherIcon": {
+                                    "type": "number"
+                                },
+                                "weatherDesc": {
+                                    "type": "string"
+                                },
+                                "weatherDescDetail": {
+                                    "type": "string"
+                                },
+                                "temperature": {
+                                    "type": "number"
+                                },
+                                "humidity": {
+                                    "type": "number"
+                                },
+                                "pressure": {
+                                    "type": "number"
+                                },
+                                "windDeg": {
+                                    "type": "number"
+                                },
+                                "windSpeed": {
+                                    "type": "number"
+                                },
+                                "dateTime": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/newWeatherData": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "data",
+                        "in": "body",
+                        "description": "New Data of WeatherCrawler",
+                        "schema": {
+                            "$ref": "#/definitions/DataSet"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "new WeatherData successful"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "DataSet": {
+            "type": "object",
+            "properties": {
+                "stationName": {
+                    "type": "string"
+                },
+                "weatherIcon": {
+                    "type": "string"
+                },
+                "weatherDesc": {
+                    "type": "string"
+                },
+                "weatherDescDetail": {
+                    "type": "string"
+                },
+                "temperature": {
+                    "type": "string"
+                },
+                "humidity": {
+                    "type": "string"
+                },
+                "pressure": {
+                    "type": "string"
+                },
+                "windDeg": {
+                    "type": "string"
+                },
+                "windSpeed": {
+                    "type": "string"
+                },
+                "dateTime": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
