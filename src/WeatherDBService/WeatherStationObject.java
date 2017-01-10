@@ -1,5 +1,9 @@
 package WeatherDBService;
 
+/**
+ * Object that represents a weather station 
+ *
+ */
 public class WeatherStationObject {
 
 	private int id;
@@ -17,10 +21,24 @@ public class WeatherStationObject {
 		this.latitude = latitude;
 	}
 	
+	/**
+	 * returns distance from this to specified lon and lat
+	 * @param longitude
+	 * @param latitude
+	 * @return
+	 */
 	public double getDistanceTo(double longitude, double latitude) {
 		return haversine(this.latitude, this.longitude, latitude, longitude);
 	}
 
+	/**
+	 * calculates distance between two coords
+	 * @param latStation
+	 * @param lngStation
+	 * @param latWaypoint
+	 * @param lngWaypoint
+	 * @return
+	 */
 	private double haversine(double latStation, double lngStation, double latWaypoint, double lngWaypoint){
         double dLat = Math.toRadians(latWaypoint - latStation);
         double dLon = Math.toRadians(lngWaypoint - lngStation);

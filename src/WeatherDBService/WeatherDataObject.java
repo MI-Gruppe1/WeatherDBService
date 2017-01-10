@@ -237,6 +237,11 @@ public class WeatherDataObject {
 			"violent storm", 
 			"hurricane"));
 	
+	/**
+	 * returns a double between 0 and 1
+	 * 0 is perfect weather
+	 * 1 is worst weather
+	 */
 	public double evaluateWeatherCondition(){
 		if (goodWeatherSet.contains(weatherDescDetail)) {
 			return 0.0;
